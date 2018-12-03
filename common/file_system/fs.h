@@ -13,6 +13,15 @@
 /* callback function typedef */
 typedef int (*callback_function)(int type,void * data,int len);
 
+/* callback defines */
+#define FS_CALLBACK_STATIC(function_name,deep)                                        \
+callback_function __FS_##function_name[deep];                                         \
+/* register task and export some gps message */                                       \
+FS_SHELL_STATIC(__FS_##function_name,__FS_##function_name,0x040000 + deep,_CB_ARRAY_);\
+
+/* call back insert */
+#define FS_CALLBACK_INSERT(function_name,type,data,len,to)                            \
+if( __FS_##function_name[to]!= 0 ) {__FS_##function_name[to](type,data,len);}         \
 /* general option */
 #define FAR
 #define FS_INODE_USABLE       (0x0000)  /* magic */
