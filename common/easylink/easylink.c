@@ -198,37 +198,7 @@ void easylink_status(unsigned int * head , unsigned int * tail , unsigned int * 
 	*tail = tail_lost;
 	*err  = easylink_err; 
 }
-/* publish */
-int easylink_publish(unsigned char ID,unsigned char * payload,unsigned char len)
-{
-	unsigned char sum = 0;
-	unsigned char buffer[300];
-	/* head */
-	buffer[0] = EASYLINK_HEAD1;
-	buffer[1] = EASYLINK_HEAD2;
-	buffer[2] = EASYLINK_HEAD3;
-	buffer[3] = EASYLINK_HEAD4;
-	/* payload len */
-	buffer[4] = len;
-	/* ID */
-	buffer[5] = ID;
-	/* direction */
-	buffer[6] = EASYLINK_DIR_SRC;
-	/* payload */
-	memcpy(&buffer[7],payload,len);
-	/* check */
-	for( int i = 0 ; i < len + 3 ; i ++ )
-	{
-		 sum += buffer[ 4 + i ];
-	}
-	/* last num */
-	buffer[ len + 7 ] = sum;
-	/* send */
-	easylink_logic_publish(buffer,len+8);
-	/* return len */
-	return len+8;
-}
-
+/* create packages */
 int easylink_create(unsigned char * buffer , unsigned short buffer_len,unsigned char ID , unsigned char * payload , unsigned char len)
 {
 	  unsigned char sum = 0;
