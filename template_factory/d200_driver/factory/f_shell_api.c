@@ -81,6 +81,8 @@ static int shell_heap_init(void)
 		memset(buf_receive,0,sizeof(buf_receive));
 		bl = 0;
 		ground = 0;
+		/* clear */
+		aging_heap_init();
 		/* ------end of file------ */
 		return FS_OK;
 }
@@ -163,24 +165,60 @@ static int shell_default_config(void)
 		}
 		/* open */
 		printf_f(file_log," insert callback ok . break\r\n");	
+		/* initial */
+		aging_config_default();
 	  /*return*/
 	  return FS_OK;
 }
 /*- printf to file */
 void printf_f(struct file * f,const char * p)
 {
-	if( f != 0 )
+	if( file_log != 0 )
 	{
-		fs_write(f,p,strlen(p));
+		fs_write(file_log,p,strlen(p));
 	}
 }
 /* call back transfer */
 int factory_callback(int type,void * data,int len)
 {
+	command_long_def command_long;
 	/* set the filter */
-	if( type == 0xff )
+	switch(type)
 	{
-		factory_unit(data,len);
+		/* 0xff is the wave task */
+		case 0xff:
+			factory_unit(data,len);
+		break;
+		/* 76 - xxxxxxxx is the aging test */
+		case 76:
+      /* -- */
+			if( len == sizeof(command_long) )
+			{
+				  /* copy data */
+					memcpy(&command_long,data,sizeof(command_long));
+					/* case what */
+				  switch(command_long.command)
+					{
+							case MAVLINK_CMD_FACTORY_CMD_1:
+							case MAVLINK_CMD_FACTORY_CMD_2:
+							case MAVLINK_CMD_FACTORY_CMD_3:
+							case MAVLINK_CMD_FACTORY_CMD_4:
+							case MAVLINK_CMD_FACTORY_CMD_5:
+							case MAVLINK_CMD_FACTORY_CMD_6:	
+							case MAVLINK_CMD_FACTORY_CMD_7:	
+							case MAVLINK_CMD_FACTORY_CMD_8:	
+						  /* ---  */
+							gs_factory_handle(command_long.command,data);
+								break;
+							default :
+								break;
+					}
+			}
+		  /* break */
+		  break;
+			/* default */
+		default :
+			break;
 	}
 	/* return */
 	return FS_OK;

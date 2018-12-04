@@ -423,6 +423,62 @@
               <FileType>1</FileType>
               <FilePath>..\..\d200_driver\factory\f_shell_api.c</FilePath>
             </File>
+            <File>
+              <FileName>Aging.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\d200_driver\factory\Aging.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -504,8 +560,8 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>output_release.bat</UserProg1Name>
-            <UserProg2Name>release.bat</UserProg2Name>
+            <UserProg1Name>E:\D200\D200_release_version\modules_respones\template_factory\build\mdk\output_release.bat</UserProg1Name>
+            <UserProg2Name>E:\D200\D200_release_version\modules_respones\template_factory\build\mdk\release.bat</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -760,7 +816,7 @@
               <MiscControls></MiscControls>
               <Define>BOARD_SAME70_XPLD __SAME70Q21__ flash TRACE_LEVEL=4 NDEBUG  NOTRACE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\FreeRTOS\Source\include;..\..\FreeRTOS\Source\CMSIS_RTOS;..\..\FreeRTOS\Source\portable\RVDS\ARM_CM7\r0p1;..\..\Hardware\Driver\Include;..\..\Hardware\Utils\libboard\include;..\..\Hardware\Utils\libchip\include;..\..\Hardware\Utils\libchip;..\..\Hardware\Utils\libchip\include\same70;..\..\Hardware\Utils\libboard;..\..\Hardware\Utils\libfatfs\inc;..\..\Hardware\Utils\libfatfs;..\..\Hardware\Utils\libmemory;..\..\Hardware\Utils\libusb\include;..\..\Hardware\Utils\md5;..\..\IFC_Plane\System;..\..\Hardware\Utils\libchip\include\cmsis\CMSIS\Include;..\..\Hardware\Utils;..\..\Hardware\Driver\board;..\..\Hardware\Utils\libchip\include;..\..\Library\Other;..\..\Library\CANBus;..\..\Library\Link;..\..\Library\Link\mavlink;..\..\Library\Link\mavlink\common;..\..\Library\Sensor;..\..\Library\Mission;..\..\Library\Common;..\..\Library\Parameter;..\..\Hardware\Driver\Timer;..\..\Hardware\Driver\Emmc;..\..\Library\Log;..\..\Library\Channels;..\..\Hardware\Driver\fs;..\..\Hardware\Driver\pwm;..\..\..\..\common\file_system</IncludePath>
+              <IncludePath>..\..\FreeRTOS\Source\include;..\..\FreeRTOS\Source\CMSIS_RTOS;..\..\FreeRTOS\Source\portable\RVDS\ARM_CM7\r0p1;..\..\Hardware\Driver\Include;..\..\Hardware\Utils\libboard\include;..\..\Hardware\Utils\libchip\include;..\..\Hardware\Utils\libchip;..\..\Hardware\Utils\libchip\include\same70;..\..\Hardware\Utils\libboard;..\..\Hardware\Utils\libfatfs\inc;..\..\Hardware\Utils\libfatfs;..\..\Hardware\Utils\libmemory;..\..\Hardware\Utils\libusb\include;..\..\Hardware\Utils\md5;..\..\IFC_Plane\System;..\..\Hardware\Utils\libchip\include\cmsis\CMSIS\Include;..\..\Hardware\Utils;..\..\Hardware\Driver\board;..\..\Hardware\Utils\libchip\include;..\..\Library\Other;..\..\Library\CANBus;..\..\Library\Link;..\..\Library\Link\mavlink;..\..\Library\Link\mavlink\common;..\..\Library\Sensor;..\..\Library\Mission;..\..\Library\Common;..\..\Library\Parameter;..\..\Hardware\Driver\Timer;..\..\Hardware\Driver\Emmc;..\..\Library\Log;..\..\Library\Channels;..\..\Hardware\Driver\fs;..\..\Hardware\Driver\pwm;..\..\..\..\common\file_system;..\..\d200_driver\radio;..\..\common\file_system;..\..\..\common\easylink</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -794,7 +850,7 @@
             <ScatterFile>..\..\Hardware\Utils\libboard\resources_e70\mdk\release.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--keep __FS_*;--diag_suppress=L6314;</Misc>
+            <Misc>--keep __FS_*;--diag_suppress=L6314;--keep __FS_SHELL_*</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -843,6 +899,11 @@
               <FileName>f_shell_api.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\d200_driver\factory\f_shell_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>Aging.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\d200_driver\factory\Aging.c</FilePath>
             </File>
           </Files>
         </Group>

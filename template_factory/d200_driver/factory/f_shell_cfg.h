@@ -30,6 +30,36 @@ typedef struct{
 
 #define GETDATA   "get"
 
+/* command for factory */
+
+#define MAVLINK_MSG_COMMAND_ACK                 77
+
+#define MAVLINK_CMD_FACTORY_CMD_1             (251)
+#define MAVLINK_CMD_FACTORY_CMD_2             (252)
+#define MAVLINK_CMD_FACTORY_CMD_3             (253)
+#define MAVLINK_CMD_FACTORY_CMD_4             (254)
+#define MAVLINK_CMD_FACTORY_CMD_5             (255)
+#define MAVLINK_CMD_FACTORY_CMD_6             (256)
+#define MAVLINK_CMD_FACTORY_CMD_7             (257)
+#define MAVLINK_CMD_FACTORY_CMD_8             (258)
+
+#define MAVLINK_MSG_ID_RMP                    (252)
+
+__packed typedef struct 
+{
+	float	param1;
+	float	param2;
+	float	param3;
+	float	param4;
+	float	param5;
+	float	param6;
+	float	param7;
+	unsigned short command;	
+	unsigned char target_system;
+	unsigned char target_component;	
+	unsigned char confirmation;		
+}command_long_def;
+
 static int shell_default_config(void);
 static int shell_heap_init(void);
 void shell_thread(void);
@@ -40,6 +70,12 @@ void factory_unit( unsigned char * data , unsigned char len );
 void line_task(void);
 int factory_callback(int type,void * data,int len);
 void gs_simple_task(void);
+void aging_heap_init(void);
+void aging_config_default(void);
+/* gs factory exit */
+int gs_factory_exit(void);
+void gs_factory_handle(unsigned short cmd,unsigned char * data);
+
 #endif
 
 
