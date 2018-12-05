@@ -117,7 +117,7 @@ int pwm_wtire(int type,void *buffer,int width,unsigned int size)
 {
 	unsigned short * pwm_value;
 	
-	if(size != 8 || width != 2)
+	if( width != 2 )
 	{
 		/* can not supply this format */
 		return FS_ERR;
@@ -130,45 +130,101 @@ int pwm_wtire(int type,void *buffer,int width,unsigned int size)
 		PWMC_SetDutyCycle(PWM1,0,pwm_value[0]);
 		return FS_OK;
 	}
-	/* equle */
-	PWMC_SetDutyCycle(PWM0,0,pwm_value[0]);
-	PWMC_SetDutyCycle(PWM0,1,pwm_value[1]);
-	PWMC_SetDutyCycle(PWM0,2,pwm_value[2]);
-	PWMC_SetDutyCycle(PWM0,3,pwm_value[3]);
+	else if( type == 3 )// for beep
+	{
+		PWMC_SetDutyCycle(PWM0,3,pwm_value[3]);
+		return FS_OK;
+	}
+	/* size */
+	switch(size)
+	{
+		/* D200 , D300 */
+		case 8:
+			/* equle */
+			PWMC_SetDutyCycle(PWM0,0,pwm_value[0]);
+			PWMC_SetDutyCycle(PWM0,1,pwm_value[1]);
+			PWMC_SetDutyCycle(PWM0,2,pwm_value[2]);
+			PWMC_SetDutyCycle(PWM0,3,pwm_value[3]);
+		break;
+		/* V100 , V200 , V300 */
+		case 6:
+			/* equle */
+			PWMC_SetDutyCycle(PWM0,0,pwm_value[0]);
+			PWMC_SetDutyCycle(PWM0,1,pwm_value[1]);
+			PWMC_SetDutyCycle(PWM0,2,pwm_value[2]);
+		break;
+		/* other . can not supply */
+		default :
+			break;
+	}
 	/* return */
 	return FS_OK;
 }
 /* enable */
 int pwm_enable(int mode)
 {
-	if( mode < 4 )
+	/* switch */
+	switch(mode)
 	{
-		/* enable all channel */
-		PWMC_EnableChannel(PWM0,0);
-		PWMC_EnableChannel(PWM0,1);
-		PWMC_EnableChannel(PWM0,2);
-		PWMC_EnableChannel(PWM0,3);
-  }else
-	{
-		PWMC_EnableChannel(PWM1,0);
-	}
+		/* whitch one */
+		case 0:
+			/* enable all channel */
+			PWMC_EnableChannel(PWM0,0);
+		break;
+		case 1:
+			/* enable all channel */
+			PWMC_EnableChannel(PWM0,1);
+		break;
+		case 2:
+			/* enable all channel */
+			PWMC_EnableChannel(PWM0,2);
+			break;
+		case 3:
+			/* enable all channel */
+		  PWMC_EnableChannel(PWM0,3);
+		  break;
+		case 4:
+			/* enable all channel */
+		  PWMC_EnableChannel(PWM1,0);
+		  break;
+		default : 
+			break;
+  }
+	/* return ok */
 	return FS_OK;
 }
 /* disable */
 int pwm_disable(int mode)
 {
-	if( mode < 4 )
-	{	
-		/* enable all channel */
-		PWMC_DisableChannel(PWM0,0);
-		PWMC_DisableChannel(PWM0,1);
-		PWMC_DisableChannel(PWM0,2);
-		PWMC_DisableChannel(PWM0,3);
-	}else
+	/* switch */
+	switch(mode)
 	{
-		PWMC_DisableChannel(PWM1,0);
-	}
-	return FS_OK;
+		/* whitch one */
+		case 0:
+			/* enable all channel */
+			PWMC_DisableChannel(PWM0,0);
+		break;
+		case 1:
+			/* enable all channel */
+			PWMC_DisableChannel(PWM0,1);
+		break;
+		case 2:
+			/* enable all channel */
+			PWMC_DisableChannel(PWM0,2);
+			break;
+		case 3:
+			/* enable all channel */
+		  PWMC_DisableChannel(PWM0,3);
+		  break;
+		case 4:
+			/* enable all channel */
+		  PWMC_DisableChannel(PWM1,0);
+		  break;
+		default : 
+			break;
+  }
+	/* return ok */
+	return FS_OK;	
 }
 
 
