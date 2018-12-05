@@ -141,6 +141,9 @@ int gs_factory_mode(unsigned short pwm,unsigned short min)
 	{
 		return ret;//create error
 	}
+	/* erase key */
+	fs_ioctl(g,2,0,0);
+	/*-----------*/
   return FS_OK;
 }
 /* gs factory exit */
