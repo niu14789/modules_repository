@@ -32,9 +32,9 @@
 
 ; /* vector is put at very begin address of FLASH, the preserved size is 0x100 */
 
-LR_IROM1 0x00470000 0x001e0000  ; load region size_region
+LR_IROM1 0x00460000 0x001e0000  ; load region size_region
 {
-    Vector_region 0x00470000 +0; load address = execution address;
+    Vector_region 0x00460000 +0; load address = execution address;
     {
         startup_sam.o (vectors, +First)
     }
