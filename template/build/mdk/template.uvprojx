@@ -396,16 +396,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>radio</GroupName>
-          <Files>
-            <File>
-              <FileName>radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\radio.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>fs</GroupName>
           <Files>
             <File>
@@ -422,6 +412,16 @@
               <FileName>fs_inode.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\common\file_system\fs_inode.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>template</GroupName>
+          <Files>
+            <File>
+              <FileName>erase_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\d200_driver\radio\erase_key.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -817,16 +817,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>radio</GroupName>
-          <Files>
-            <File>
-              <FileName>radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\radio.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>fs</GroupName>
           <Files>
             <File>
@@ -843,6 +833,16 @@
               <FileName>fs_inode.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\common\file_system\fs_inode.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>template</GroupName>
+          <Files>
+            <File>
+              <FileName>erase_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\d200_driver\radio\erase_key.c</FilePath>
             </File>
           </Files>
         </Group>
