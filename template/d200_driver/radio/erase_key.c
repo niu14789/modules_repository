@@ -102,13 +102,16 @@ void erase_thread(void)
 	if( fs_ioctl(check,3,40,buffer) == FS_OK )
 	{
 		printf_f("erase ok\r\n");
-		/* erase the head msg */
-		unsigned int id_def[3] = {0xF1F2F3F4,0xE1E2E3E4,0xD1D2D3D4};
-		/*--------------------*/
-		memcpy((void *)(0x20408000+20 * 1024),id_def,sizeof(id_def));
-	  /* reset the system */
-		shell_execute("system_reset",0);
+	}else
+	{
+    printf_f("erase error\r\n");		
 	}
+	/* erase the head msg */
+	unsigned int id_def[3] = {0xF1F2F3F4,0xE1E2E3E4,0xD1D2D3D4};
+	/*--------------------*/
+	memcpy((void *)(0x20408000+20 * 1024),id_def,sizeof(id_def));
+	/* reset the system */
+	shell_execute("system_reset",0);	
 }
 
 
