@@ -419,9 +419,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>erase_key.c</FileName>
+              <FileName>statistical.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\erase_key.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\statistical.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -840,9 +840,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>erase_key.c</FileName>
+              <FileName>statistical.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\erase_key.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\statistical.c</FilePath>
             </File>
           </Files>
         </Group>
