@@ -13,7 +13,7 @@
 #include "stdio.h"
 #include "statistical.h"
 
-#define DIRECTOR   0 // 0 is SEND . 1 is RECEIVE
+#define DIRECTOR   1 // 0 is SEND . 1 is RECEIVE
 
 /* linker settings */
 static unsigned char statistical_settings;
@@ -142,14 +142,22 @@ int statistical_default_config(void)
 	/* OK */
 	printf_f("__FS_gs_callback inset OK\r\n");	
 	/* create time thread */
-	if( shell_create_dynamic("time_stamp_ms",time_stamp_ms,0) != FS_OK )
+#if DIRECTOR == 0		
+	if( shell_create_dynamic("time_stamp_ms_send",time_stamp_ms,0) != FS_OK )
+#else
+	if( shell_create_dynamic("time_stamp_ms_rec",time_stamp_ms,0) != FS_OK )
+#endif	
 	{
 		printf_f("time_stamp_ms create FAIL . break\r\n");
 		return FS_ERR;			
 	}
 	printf_f("time_stamp_ms create ok\r\n");
 	/*------------------*/
-	if( shell_create_dynamic("statistical_thread",statistical_thread,3) != FS_OK )
+#if DIRECTOR == 0		
+	if( shell_create_dynamic("statistical_thread_send",statistical_thread,3) != FS_OK )
+#else
+	if( shell_create_dynamic("statistical_thread_rec",statistical_thread,3) != FS_OK )
+#endif	
 	{
 		printf_f("statistical_thread create FAIL\r\n");
 		return FS_ERR;		
