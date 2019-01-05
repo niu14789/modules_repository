@@ -13,14 +13,12 @@ extern void printf_f(struct file * f,const char * p);
 static struct file *algo;
 static unsigned short factor_time = 0;
 static unsigned char factory_once_flags = 0;
-//static unsigned char calibration_mode = 0;//1
 static struct shell_cmd * gs_mrs;
 static unsigned short gs_cnt_pwm = 0;
-//static unsigned char factory_snr_mode = 0;//2
-//static unsigned char factory_optright_mode = 0;//3
 static unsigned char snr_flag = 0;
 static unsigned char optright_flag = 0;
-static struct file * g;
+static struct file * g,*ck;
+static unsigned char D_or_v;//0 is D-series
 /*----------------------------------------------*/
 FS_CALLBACK_STATIC(aging_callback,1);
 /* modules heap init */
@@ -34,6 +32,7 @@ void aging_heap_init(void)
 	snr_flag = 0;
 	optright_flag = 0;
 	algo = 0;
+	D_or_v = __D_SERIES__;
 	/* init callback */
 	FS_SHELL_INIT(__FS_aging_callback,__FS_aging_callback,0x040001,_CB_ARRAY_);
 }
@@ -51,6 +50,17 @@ void aging_config_default(void)
 		}
 		/* ok */
 		printf_f(0," open g ok\r\n");	
+		/* check */
+		ck = open("/system_check.d",__FS_OPEN_ALWAYS);
+		/* judge if it's empty */
+		if( ck == 0 )
+		{
+			 printf_f(0," open check node fail . break\r\n");
+			 /* judging */
+			 return;
+		}
+		/* ok */
+		printf_f(0," open check node ok\r\n");	
 		/* open algo */
 		algo = open("/algo.o",__FS_OPEN_ALWAYS);
 		/* judging */
@@ -62,6 +72,19 @@ void aging_config_default(void)
 		}		
 		/* ok */
 		printf_f(0," open algo ok\r\n");		
+		/* get series */
+		if( fs_ioctl(algo,199,0,0) == 0x1725ABCD )
+		{
+			D_or_v = __V_SERIES__;
+	    /* printf msg */
+      printf_f(0," plane is V-series \r\n");				
+		}
+		else
+		{
+			D_or_v = __D_SERIES__;
+	    /* printf msg */
+      printf_f(0," plane is D-series \r\n");			
+		}
 		/* delete orignal task of motor */
 		if( shell_delete_dynamic("vtask_5ms",0xff) != FS_OK )
 		{
@@ -76,6 +99,19 @@ void aging_config_default(void)
 static void gs_factory_cmd_ack(unsigned short cmd , unsigned char ok)
 {
 	unsigned short cmd_ack[2] = {cmd,ok};
+	/*------*/
+	if( D_or_v == __V_SERIES__ )
+	{
+		cmd_ack[0] |= 0x8000;
+	}
+	else if( D_or_v == __D_SERIES__ )
+	{
+		cmd_ack[0] &=~ 0x8000;
+	}
+	else
+	{
+		// unknow plane
+	}
 	/* send */
 	fs_ioctl(g,0,3 << 16 | MAVLINK_MSG_COMMAND_ACK , (unsigned char *)&cmd_ack);
 }
@@ -94,6 +130,49 @@ int gs_factory_pwm(struct file * f_p,unsigned short pwm)
 	/*------*/
 	return FS_OK;
 }
+/*---------*/
+int gs_factory_servo(struct file * f_p , float * sv )
+{
+	/* factory mode ? */
+	if( !(factory_once_flags & 0x4) )
+	{
+		return FS_ERR;
+	}
+	/* transfer */
+	unsigned short servo_value[7];
+	/* set value */
+	for( int i = 0 ; i < 7 ; i ++ )
+	{
+		servo_value[i] = (unsigned short)sv[i];
+	}
+	/* output */
+	fs_ioctl(f_p,200,0,servo_value);
+	/*------*/
+	return FS_OK;
+}
+/*-------------------*/
+int gs_factory_storage(struct file * f_p , float * sv )
+{
+	/* factory mode ? */
+	if( !(factory_once_flags & 0x4) )
+	{
+		return FS_ERR;
+	}
+	/* transfer */
+	unsigned short servo_value[7];
+	/* set value */
+	for( int i = 0 ; i < 7 ; i ++ )
+	{
+		servo_value[i] = (unsigned short)sv[i];
+	}
+	/* data transfer */
+	unsigned int sout[2] = { (unsigned int)servo_value,sizeof(servo_value) };
+	/* output */
+	int ret = fs_ioctl(f_p,1,FLASH_CALIBRATE,sout);
+	/*------*/
+	return ret;
+}
+/*-------------------*/
 static void gs_factory_thread(void)
 {
 	if( factor_time > 0 )
@@ -170,9 +249,9 @@ int gs_factory_exit(void)
 /* handle */
 void gs_factory_handle(unsigned short cmd,unsigned char * data)
 {
-	float tmp[3];
+	float tmp[7];
 	/*---------*/
-	memcpy(tmp,data,12);
+	memcpy(tmp,data,sizeof(tmp));
 	/* len matck ? */
 	switch(cmd)
 	{
@@ -210,6 +289,36 @@ void gs_factory_handle(unsigned short cmd,unsigned char * data)
 				}
 				/*----------------*/
 			break;
+		case MAVLINK_CMD_FACTORY_CMD_9:// dset servo
+			/* do */
+			if( gs_factory_servo(algo,tmp) == FS_OK )
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_9,0);//ok
+			}else
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_9,1);//error
+			}			
+			break;				
+		case MAVLINK_CMD_FACTORY_CMD_10:// calibration
+			/* do */
+			if( gs_factory_storage(ck,tmp) == FS_OK )
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_10,0);//ok
+			}else
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_10,1);//error
+			}			
+			break;				
+		case MAVLINK_CMD_FACTORY_CMD_11:// calibration
+//			/* do */
+//			if( gs_factory_storage(algo,tmp) == FS_OK )
+//			{
+//				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,0);//ok
+//			}else
+//			{
+//				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,1);//error
+//			}			
+			break;				
 		case MAVLINK_CMD_FACTORY_CMD_4://motor
 				/* get correct len */
 				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_4,0xff);//ok ack

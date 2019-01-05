@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>BOARD_SAME70_XPLD __SAME70Q21__ flash TRACE_LEVEL=4 NDEBUG  NOTRACE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\FreeRTOS\Source\include;..\..\FreeRTOS\Source\CMSIS_RTOS;..\..\FreeRTOS\Source\portable\RVDS\ARM_CM7\r0p1;..\..\Hardware\Driver\Include;..\..\Hardware\Utils\libboard\include;..\..\Hardware\Utils\libchip\include;..\..\Hardware\Utils\libchip;..\..\Hardware\Utils\libchip\include\same70;..\..\Hardware\Utils\libboard;..\..\Hardware\Utils\libfatfs\inc;..\..\Hardware\Utils\libfatfs;..\..\Hardware\Utils\libmemory;..\..\Hardware\Utils\libusb\include;..\..\Hardware\Utils\md5;..\..\IFC_Plane\System;..\..\Hardware\Utils\libchip\include\cmsis\CMSIS\Include;..\..\Hardware\Utils;..\..\Hardware\Driver\board;..\..\Hardware\Utils\libchip\include;..\..\Library\Other;..\..\Library\CANBus;..\..\Library\Link;..\..\Library\Link\mavlink;..\..\Library\Link\mavlink\common;..\..\Library\Sensor;..\..\Library\Mission;..\..\Library\Common;..\..\Library\Parameter;..\..\Hardware\Driver\Timer;..\..\Hardware\Driver\Emmc;..\..\Library\Log;..\..\Library\Channels;..\..\Hardware\Driver\fs;..\..\Hardware\Driver\pwm;..\..\..\..\common\file_system;..\..\d200_driver\radio;..\..\common\file_system;..\..\..\common\easylink</IncludePath>
+              <IncludePath>..\..\..\common\file_system;..\..\..\common\easylink</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -401,17 +401,17 @@
             <File>
               <FileName>f_open.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\common\file_system\f_open.c</FilePath>
+              <FilePath>..\..\..\common\file_system\f_open.c</FilePath>
             </File>
             <File>
               <FileName>f_shell.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\common\file_system\f_shell.c</FilePath>
+              <FilePath>..\..\..\common\file_system\f_shell.c</FilePath>
             </File>
             <File>
               <FileName>fs_inode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\common\file_system\fs_inode.c</FilePath>
+              <FilePath>..\..\..\common\file_system\fs_inode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -765,7 +765,7 @@
               <MiscControls></MiscControls>
               <Define>BOARD_SAME70_XPLD __SAME70Q21__ flash TRACE_LEVEL=4 NDEBUG  NOTRACE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\FreeRTOS\Source\include;..\..\FreeRTOS\Source\CMSIS_RTOS;..\..\FreeRTOS\Source\portable\RVDS\ARM_CM7\r0p1;..\..\Hardware\Driver\Include;..\..\Hardware\Utils\libboard\include;..\..\Hardware\Utils\libchip\include;..\..\Hardware\Utils\libchip;..\..\Hardware\Utils\libchip\include\same70;..\..\Hardware\Utils\libboard;..\..\Hardware\Utils\libfatfs\inc;..\..\Hardware\Utils\libfatfs;..\..\Hardware\Utils\libmemory;..\..\Hardware\Utils\libusb\include;..\..\Hardware\Utils\md5;..\..\IFC_Plane\System;..\..\Hardware\Utils\libchip\include\cmsis\CMSIS\Include;..\..\Hardware\Utils;..\..\Hardware\Driver\board;..\..\Hardware\Utils\libchip\include;..\..\Library\Other;..\..\Library\CANBus;..\..\Library\Link;..\..\Library\Link\mavlink;..\..\Library\Link\mavlink\common;..\..\Library\Sensor;..\..\Library\Mission;..\..\Library\Common;..\..\Library\Parameter;..\..\Hardware\Driver\Timer;..\..\Hardware\Driver\Emmc;..\..\Library\Log;..\..\Library\Channels;..\..\Hardware\Driver\fs;..\..\Hardware\Driver\pwm;..\..\..\..\common\file_system;..\..\d200_driver\radio;..\..\common\file_system;..\..\..\common\easylink</IncludePath>
+              <IncludePath>..\..\..\common\file_system;..\..\..\common\easylink</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -827,17 +827,17 @@
             <File>
               <FileName>f_open.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\common\file_system\f_open.c</FilePath>
+              <FilePath>..\..\..\common\file_system\f_open.c</FilePath>
             </File>
             <File>
               <FileName>f_shell.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\common\file_system\f_shell.c</FilePath>
+              <FilePath>..\..\..\common\file_system\f_shell.c</FilePath>
             </File>
             <File>
               <FileName>fs_inode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\common\file_system\fs_inode.c</FilePath>
+              <FilePath>..\..\..\common\file_system\fs_inode.c</FilePath>
             </File>
           </Files>
         </Group>

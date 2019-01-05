@@ -15,7 +15,8 @@
 static struct file * file_debug;
 #endif
 /* declare */
-static unsigned short version_unit[16];
+static unsigned short version_unit[24];
+static unsigned short version_v100[24];
 /* led status */
 static unsigned char led_status;
 /* calibration status */
@@ -39,6 +40,8 @@ void printf_f(struct file * f,const char * p);
 FS_INODE_REGISTER("/factory.o",shell,shell_heap_init,0);
 /*--- some define ---*/
 FS_SHELL_REGISTER(version_unit);
+/* v100 versions */
+FS_SHELL_REGISTER(version_v100);
 /*----------------------------------*/
 FS_SHELL_REGISTER(led_status);
 /*----------------------------------*/
@@ -61,13 +64,15 @@ static int shell_heap_init(void)
 		shell.flip.f_inode = &shell;
 		shell.flip.f_path = "/factory.o";
 	  /* shell */
-	  FS_SHELL_INIT(version_unit,version_unit,0x020000+16,_CB_ARRAY_);
+	  FS_SHELL_INIT(version_unit,version_unit,0x020000+24,_CB_ARRAY_);
+	  FS_SHELL_INIT(version_v100,version_v100,0x020000+24,_CB_ARRAY_);
 	  FS_SHELL_INIT(led_status,led_status,0x010001,_CB_VAR_);
 	  FS_SHELL_INIT(cali_status,cali_status,0x010001,_CB_VAR_);
 		/* heap */
 		shell.i_flags = __FS_IS_INODE_OK|__FS_IS_INODE_INIT;
 		/* add your own code here */
 		memset(version_unit,0,sizeof(version_unit));
+	  memset(version_v100,0,sizeof(version_v100));
 		led_status = 0;
 		cali_status = 0;
 		memset(&line_cmd,0,sizeof(line_cmd));
@@ -207,8 +212,13 @@ int factory_callback(int type,void * data,int len)
 							case MAVLINK_CMD_FACTORY_CMD_6:	
 							case MAVLINK_CMD_FACTORY_CMD_7:	
 							case MAVLINK_CMD_FACTORY_CMD_8:	
-						  /* ---  */
-							gs_factory_handle(command_long.command,data);
+							case MAVLINK_CMD_FACTORY_CMD_9:	
+							case MAVLINK_CMD_FACTORY_CMD_10:	
+							case MAVLINK_CMD_FACTORY_CMD_11:	
+							case MAVLINK_CMD_FACTORY_CMD_12:
+							case MAVLINK_CMD_FACTORY_CMD_13:
+								/* ---  */
+								gs_factory_handle(command_long.command,data);
 								break;
 							default :
 								break;
@@ -402,7 +412,7 @@ static int publish_one_shell( unsigned char num  )
 					num = ((sp_start->size & 0x7fffff) >> 16) * (sp_start->size&0xffff);
 			 }
 			 /* get length */
-			 real_len = (num>32)?32:num;
+			 real_len = (num>48)?48:num;
 			 /* copy data */
 			 memcpy(node.data,sp_start->enter,real_len);
 		}
@@ -474,9 +484,10 @@ void factory_unit( unsigned char * data , unsigned char len )
 			  if( len == 3 )
 				{
 					/* update version */
-					for( int i = 0 ; i < 16 ; i ++ )
+					for( int i = 0 ; i < 24 ; i ++ )
           {
 						version_unit[i] = fs_ioctl(bl,0,i,0);
+						version_v100[i] = version_unit[i];
 					}
 					/*----------------*/
 					if( data[1] == 0x00 )

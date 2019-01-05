@@ -3,6 +3,20 @@
 #ifndef __SHELL_H__
 #define __SHELL_H__
 
+#define __D_SERIES__   (0)
+#define __V_SERIES__   (1)
+
+#define FLASH_BACKUP     ( 0xE0000 )
+#define KEY_ECP_SIZE     ( 42 )          
+#define FLASH_BACKUP_SN  ( FLASH_BACKUP + KEY_ECP_SIZE )
+#define SN_NUM_SIZE      ( 34 )
+#define FLASH_MILEAGE    ( FLASH_BACKUP_SN + SN_NUM_SIZE )
+#define MILEAGE_SIZE     ( 6 )
+#define FLASH_FLIGHT_NUM ( FLASH_MILEAGE + MILEAGE_SIZE )
+#define FLIGHT_SIZE      ( 6 )
+#define FLASH_CALIBRATE  ( FLASH_FLIGHT_NUM + FLIGHT_SIZE )
+#define FLASH_CALI_SIZE  ( 16 )
+
 typedef struct{
 	unsigned short line_num;
 	unsigned short i_flags;//status
@@ -42,6 +56,11 @@ typedef struct{
 #define MAVLINK_CMD_FACTORY_CMD_6             (256)
 #define MAVLINK_CMD_FACTORY_CMD_7             (257)
 #define MAVLINK_CMD_FACTORY_CMD_8             (258)
+#define MAVLINK_CMD_FACTORY_CMD_9             (259) // dset servo
+#define MAVLINK_CMD_FACTORY_CMD_10            (260) // calibrate
+#define MAVLINK_CMD_FACTORY_CMD_11            (261) // R calibrate
+#define MAVLINK_CMD_FACTORY_CMD_12            (262) // R calibrate
+#define MAVLINK_CMD_FACTORY_CMD_13            (263) // R calibrate
 
 #define MAVLINK_MSG_ID_RMP                    (252)
 
