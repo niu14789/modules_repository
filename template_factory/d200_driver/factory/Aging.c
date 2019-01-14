@@ -18,7 +18,7 @@ static unsigned short gs_cnt_pwm = 0;
 static unsigned char snr_flag = 0;
 static unsigned char optright_flag = 0;
 static struct file * g,*ck;
-static unsigned char D_or_v;//0 is D-series
+unsigned char D_or_v;//0 is D-series
 /*----------------------------------------------*/
 FS_CALLBACK_STATIC(aging_callback,1);
 /* modules heap init */
@@ -85,15 +85,6 @@ void aging_config_default(void)
 	    /* printf msg */
       printf_f(0," plane is D-series \r\n");			
 		}
-		/* delete orignal task of motor */
-		if( shell_delete_dynamic("vtask_5ms",0xff) != FS_OK )
-		{
-			 printf_f(0," delete vtask_5ms fail . break\r\n");
-			 /* judging */
-			 return;					
-		}
-		/* ok */		
-		printf_f(0," delete vtask_5ms ok\r\n");
 }
 /* defaild */
 static void gs_factory_cmd_ack(unsigned short cmd , unsigned char ok)
@@ -223,6 +214,11 @@ int gs_factory_mode(unsigned short pwm,unsigned short min)
 	/* erase key */
 	fs_ioctl(g,2,0,0);
 	/*-----------*/
+	/* delete orignal task of motor */
+	if( shell_delete_dynamic("vtask_5ms",0xff) != FS_OK )
+	{
+		 return FS_ERR;					
+	}
   return FS_OK;
 }
 /* gs factory exit */

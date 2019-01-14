@@ -17,6 +17,7 @@ static struct file * file_debug;
 /* declare */
 static unsigned short version_unit[24];
 static unsigned short version_v100[24];
+static unsigned short version_vion[12];
 /* led status */
 static unsigned char led_status;
 /* calibration status */
@@ -36,12 +37,16 @@ static char buf_receive[64];
 /*----------------------------------*/
 void printf_f(struct file * f,const char * p);
 /*----------------------------------*/
+extern unsigned char D_or_v;
+/*----------------------------------*/
 /* define the inode */
 FS_INODE_REGISTER("/factory.o",shell,shell_heap_init,0);
 /*--- some define ---*/
 FS_SHELL_REGISTER(version_unit);
 /* v100 versions */
 FS_SHELL_REGISTER(version_v100);
+/* other version */
+FS_SHELL_REGISTER(version_vion);
 /*----------------------------------*/
 FS_SHELL_REGISTER(led_status);
 /*----------------------------------*/
@@ -66,6 +71,7 @@ static int shell_heap_init(void)
 	  /* shell */
 	  FS_SHELL_INIT(version_unit,version_unit,0x020000+24,_CB_ARRAY_);
 	  FS_SHELL_INIT(version_v100,version_v100,0x020000+24,_CB_ARRAY_);
+	  FS_SHELL_INIT(version_vion,version_vion,0x020000+12,_CB_ARRAY_);
 	  FS_SHELL_INIT(led_status,led_status,0x010001,_CB_VAR_);
 	  FS_SHELL_INIT(cali_status,cali_status,0x010001,_CB_VAR_);
 		/* heap */
@@ -73,6 +79,7 @@ static int shell_heap_init(void)
 		/* add your own code here */
 		memset(version_unit,0,sizeof(version_unit));
 	  memset(version_v100,0,sizeof(version_v100));
+	  memset(version_vion,0,sizeof(version_vion));
 		led_status = 0;
 		cali_status = 0;
 		memset(&line_cmd,0,sizeof(line_cmd));
@@ -488,6 +495,14 @@ void factory_unit( unsigned char * data , unsigned char len )
           {
 						version_unit[i] = fs_ioctl(bl,0,i,0);
 						version_v100[i] = version_unit[i];
+					}
+					/* v100 */
+					if( D_or_v == __V_SERIES__ )
+					{
+						for( int i = 24 ; i < 36 ; i ++ )
+						{
+							version_vion[i-24] = fs_ioctl(bl,0,i,0);
+						}
 					}
 					/*----------------*/
 					if( data[1] == 0x00 )
