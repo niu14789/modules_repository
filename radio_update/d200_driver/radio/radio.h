@@ -15,6 +15,13 @@ const unsigned char RADIO_START_WORK[] =
 const unsigned char RADIO_RES_FB[] = 
 {0x46,0x4D,0xFE,0x01,0x01,0x10,0x00,0xAA,0x55};
 	
+__packed typedef struct 
+{
+	unsigned char devId[16];
+	unsigned char FWver[16];
+	unsigned char fill_data[24];
+}radio_param_def;
+
 int radio_disable(int mode);
 int radio_enable(int mode);
 int radio_wtire(int type,void *buffer,int width,unsigned int size);

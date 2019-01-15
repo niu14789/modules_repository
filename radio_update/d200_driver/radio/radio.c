@@ -172,6 +172,22 @@ void radio_thread(void)
 	/* need update ? */
 	if( radio_ver != 0 )
 	{
+		/*-------------------------------*/
+		char buffer[64];
+		char rbp[64];
+		/* full with 0 */
+		memset(buffer,0,sizeof(buffer));
+		memset(rbp,0,sizeof(rbp));
+		/* open new file */
+		file_log = open("/storage/emmc/system/radio.rv",__FS_CREATE_ALWAYS|__FS_WRITE);		
+		/* get and transfer data */
+		memcpy(buffer,radio_ver_head,16);
+		memcpy(buffer+32,radio_ver_head+16,16);
+		/* create buffer */
+		sprintf(rbp,"devId:%s\r\nFWver:%s\r\n",buffer,buffer+32);
+		/*-------------------------------------*/
+		fs_write(file_log,rbp,strlen(rbp));			
+		/*-------------------------------------*/		
 		/* not need */
 		shell_delete_dynamic("radio_thread",0xff);
 		/*---------------------------------------*/
