@@ -17,7 +17,7 @@ static struct shell_cmd * gs_mrs;
 static unsigned short gs_cnt_pwm = 0;
 static unsigned char snr_flag = 0;
 static unsigned char optright_flag = 0;
-static struct file * g,*ck;
+static struct file * g,*ck,*can;
 unsigned char D_or_v;//0 is D-series
 /*----------------------------------------------*/
 FS_CALLBACK_STATIC(aging_callback,1);
@@ -44,46 +44,57 @@ void aging_config_default(void)
 		/* judge if it's empty */
 		if( g == 0 )
 		{
-			 printf_f(0," open g fail . break\r\n");
+			 printf_f(0,"open g fail . break\r\n");
 			 /* judging */
 			 return;
 		}
 		/* ok */
-		printf_f(0," open g ok\r\n");	
+		printf_f(0,"open g ok\r\n");	
 		/* check */
 		ck = open("/system_check.d",__FS_OPEN_ALWAYS);
 		/* judge if it's empty */
 		if( ck == 0 )
 		{
-			 printf_f(0," open check node fail . break\r\n");
+			 printf_f(0,"open check node fail . break\r\n");
 			 /* judging */
 			 return;
 		}
 		/* ok */
-		printf_f(0," open check node ok\r\n");	
+		printf_f(0,"open check node ok\r\n");	
 		/* open algo */
 		algo = open("/algo.o",__FS_OPEN_ALWAYS);
 		/* judging */
 		if( algo == 0 )
 		{
-			 printf_f(0," open algo fail . break\r\n");
+			 printf_f(0,"open algo fail . break\r\n");
 			 /* judging */
 			 return;			
 		}		
 		/* ok */
-		printf_f(0," open algo ok\r\n");		
+		printf_f(0,"open algo ok\r\n");		
+		/* open can */
+		can = open("/can.o",__FS_OPEN_ALWAYS);
+		/* judging */
+		if( can == 0 )
+		{
+			 printf_f(0,"open can fail . break\r\n");
+			 /* judging */
+			 return;			
+		}		
+		/* ok */
+		printf_f(0,"open can ok\r\n");			
 		/* get series */
 		if( fs_ioctl(algo,199,0,0) == 0x1725ABCD )
 		{
 			D_or_v = __V_SERIES__;
 	    /* printf msg */
-      printf_f(0," plane is V-series \r\n");				
+      printf_f(0,"plane is V-series \r\n");				
 		}
 		else
 		{
 			D_or_v = __D_SERIES__;
 	    /* printf msg */
-      printf_f(0," plane is D-series \r\n");			
+      printf_f(0,"plane is D-series \r\n");			
 		}
 }
 /* defaild */
@@ -162,6 +173,24 @@ int gs_factory_storage(struct file * f_p , float * sv )
 	int ret = fs_ioctl(f_p,1,FLASH_CALIBRATE,sout);
 	/*------*/
 	return ret;
+}
+/*-------------------*/
+int gs_factory_can(struct file * f_p , unsigned short * sv )
+{
+	/* factory mode ? */
+	if( !(factory_once_flags & 0x4) )
+	{
+		return FS_ERR;
+	}
+	/* transfer */
+  unsigned short id  = sv[0];
+	unsigned short dir = sv[1];
+	unsigned short len = sv[2];
+	unsigned short *da = &sv[3];
+	/* send */
+	drv_write(f_p,dir?1:0,da,id,len);
+	/* return ok */
+	return FS_OK;
 }
 /*-------------------*/
 static void gs_factory_thread(void)
@@ -306,14 +335,14 @@ void gs_factory_handle(unsigned short cmd,unsigned char * data)
 			}			
 			break;				
 		case MAVLINK_CMD_FACTORY_CMD_11:// calibration
-//			/* do */
-//			if( gs_factory_storage(algo,tmp) == FS_OK )
-//			{
-//				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,0);//ok
-//			}else
-//			{
-//				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,1);//error
-//			}			
+			/* do */
+			if( gs_factory_can(algo,(unsigned short *)tmp) == FS_OK )
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,0);//ok
+			}else
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,1);//error
+			}			
 			break;				
 		case MAVLINK_CMD_FACTORY_CMD_4://motor
 				/* get correct len */

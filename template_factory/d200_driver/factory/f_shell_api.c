@@ -142,41 +142,41 @@ static int shell_default_config(void)
 		/* judge if it's empty */
 		if( ground_uart5 == 0 )
 		{
-			printf_f(file_log," open uart5 fail . break\r\n");
+			printf_f(file_log,"open uart5 fail . break\r\n");
 			return FS_ERR;
 		}
 		/* ok */
-		printf_f(file_log," open uart5 ok . break\r\n");
+		printf_f(file_log,"open uart5 ok . break\r\n");
 		/* open bl uart */
     bl = open("/bootloader.o",__FS_OPEN_ALWAYS);
 		/* judge if it's empty */
 		if( bl == 0 )
 		{
-			printf_f(file_log," open bl fail . break\r\n");
+			printf_f(file_log,"open bl fail . break\r\n");
 			return FS_ERR;
 		}
 		/* ok */
-		printf_f(file_log," open bl ok . break\r\n");		
+		printf_f(file_log,"open bl ok . break\r\n");		
 	  /* open groung uart */
     ground = open("/ground.d",__FS_OPEN_ALWAYS);
 		/* judge if it's empty */
 		if( ground == 0 )
 		{
-			printf_f(file_log," open ground fail . break\r\n");
+			printf_f(file_log,"open ground fail . break\r\n");
 			return FS_ERR;
 		}
 		/* ok */
-		printf_f(file_log," open ground ok . break\r\n");	
+		printf_f(file_log,"open ground ok . break\r\n");	
     /* insert the callback */
     unsigned int fun = (unsigned int)factory_callback;
     /* insert */
     if( shell_write("__FS_gs_callback",&fun,4,3*4) == FS_ERR )
 		{
-			 printf_f(file_log," insert callback fail . break\r\n");	
+			 printf_f(file_log,"insert callback fail . break\r\n");	
 			 return FS_ERR;
 		}
 		/* open */
-		printf_f(file_log," insert callback ok . break\r\n");	
+		printf_f(file_log,"insert callback ok . break\r\n");	
 		/* initial */
 		aging_config_default();
 	  /*return*/
