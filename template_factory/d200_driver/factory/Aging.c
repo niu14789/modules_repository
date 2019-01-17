@@ -336,7 +336,7 @@ void gs_factory_handle(unsigned short cmd,unsigned char * data)
 			break;				
 		case MAVLINK_CMD_FACTORY_CMD_11:// calibration
 			/* do */
-			if( gs_factory_can(algo,(unsigned short *)tmp) == FS_OK )
+			if( gs_factory_can(can,(unsigned short *)tmp) == FS_OK )
 			{
 				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_11,0);//ok
 			}else
