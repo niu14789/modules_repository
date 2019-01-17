@@ -185,10 +185,16 @@ int gs_factory_can(struct file * f_p , unsigned short * sv )
 	/* transfer */
   unsigned short id  = sv[0];
 	unsigned short dir = sv[1];
-	unsigned short len = sv[2];
-	unsigned short *da = &sv[3];
+//	unsigned short len = sv[2];
+	/*----------*/
+	unsigned char da[4];
+  /*----------*/
+	for( int i = 0 ; i < 4 ; i ++ )
+	{
+		da[i] = (unsigned char)sv[3+i];
+	}
 	/* send */
-	drv_write(f_p,dir?1:0,da,id,len);
+	drv_write(f_p,dir?1:0,da,id,4);
 	/* return ok */
 	return FS_OK;
 }
