@@ -184,7 +184,7 @@ void radio_thread(void)
 		memcpy(buffer,radio_ver_head,16);
 		memcpy(buffer+32,radio_ver_head+16,16);
 		/* create buffer */
-		sprintf(rbp,"devId:%s\r\nFWver:%s\r\n",buffer,buffer+32);
+		sprintf(rbp,"devId:%s\r\nFWver:%s\r\nNET:0x%X%X",buffer,buffer+32,radio_ver_head[32],radio_ver_head[33]);
 		/*-------------------------------------*/
 		fs_write(file_log,rbp,strlen(rbp));			
 		/*-------------------------------------*/		
