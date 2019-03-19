@@ -419,9 +419,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>remove_check.c</FileName>
+              <FileName>set_planes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\remove_check.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\set_planes.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -840,9 +840,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>remove_check.c</FileName>
+              <FileName>set_planes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\remove_check.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\set_planes.c</FilePath>
             </File>
           </Files>
         </Group>
