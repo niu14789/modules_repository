@@ -16,6 +16,8 @@
 #define FLIGHT_SIZE      ( 6 )
 #define FLASH_CALIBRATE  ( FLASH_FLIGHT_NUM + FLIGHT_SIZE )
 #define FLASH_CALI_SIZE  ( 16 )
+#define FLASH_PLANE_TYPE ( FLASH_CALIBRATE + FLASH_CALI_SIZE )
+#define FLASH_PLANE_SIZE ( 4 )
 
 typedef struct{
 	unsigned short line_num;
@@ -61,8 +63,10 @@ typedef struct{
 #define MAVLINK_CMD_FACTORY_CMD_11            (261) // R calibrate
 #define MAVLINK_CMD_FACTORY_CMD_12            (262) // R calibrate
 #define MAVLINK_CMD_FACTORY_CMD_13            (263) // R calibrate
+#define MAVLINK_CMD_FACTORY_CMD_14            (264) // set plane type
 
 #define MAVLINK_MSG_ID_RMP                    (252)
+#define MAVLINK_MSG_ID_CAL                    (251)
 
 __packed typedef struct 
 {

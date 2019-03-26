@@ -19,6 +19,8 @@ static unsigned char snr_flag = 0;
 static unsigned char optright_flag = 0;
 static struct file * g,*ck,*can;
 unsigned char D_or_v;//0 is D-series
+static unsigned short servo_calibrition_value[7];
+static unsigned int servo_freq;
 /*----------------------------------------------*/
 FS_CALLBACK_STATIC(aging_callback,1);
 /* modules heap init */
@@ -32,7 +34,10 @@ void aging_heap_init(void)
 	snr_flag = 0;
 	optright_flag = 0;
 	algo = 0;
+	servo_freq = 0;
 	D_or_v = __D_SERIES__;
+	/* full of zero */
+	memset(servo_calibrition_value,0,sizeof(servo_calibrition_value));
 	/* init callback */
 	FS_SHELL_INIT(__FS_aging_callback,__FS_aging_callback,0x040001,_CB_ARRAY_);
 }
@@ -96,6 +101,11 @@ void aging_config_default(void)
 	    /* printf msg */
       printf_f(0,"plane is D-series \r\n");			
 		}
+		/* read calibration value */
+		/* data transfer */
+		unsigned int sout[2] = { (unsigned int)servo_calibrition_value,sizeof(servo_calibrition_value) };
+		/* output */
+		fs_ioctl(ck,0,FLASH_CALIBRATE,sout);
 }
 /* defaild */
 static void gs_factory_cmd_ack(unsigned short cmd , unsigned char ok)
@@ -174,6 +184,26 @@ int gs_factory_storage(struct file * f_p , float * sv )
 	/*------*/
 	return ret;
 }
+/* plane type settings */
+int gs_factory_setplane(struct file * f_p,float * sv)
+{
+	/* get settings */
+	unsigned short * plane_type = ( unsigned short *)sv;
+	/* judging */
+	if( *plane_type == 100 || *plane_type == 200 || *plane_type == 300 )
+	{
+		/* ok */
+	  if( fs_ioctl(f_p,14,2,plane_type) == FS_OK )
+	  {
+		  if( *plane_type == fs_ioctl(f_p,15,0,0) )
+			{
+				return *plane_type;
+			}
+		}		
+	}
+	/* return error */
+	return FS_ERR;
+}
 /*-------------------*/
 int gs_factory_can(struct file * f_p , unsigned short * sv )
 {
@@ -214,6 +244,12 @@ static void gs_factory_thread(void)
 			if( gs_mrs != NULL )
 			{
 				fs_ioctl(g,0,((gs_mrs->size>>16)*(gs_mrs->size&0xffff)) << 16 | MAVLINK_MSG_ID_RMP , (unsigned char *)gs_mrs->enter);
+			}
+			/* freq ctrl */
+			if( servo_freq++ < 2500 )
+			{
+				/* send servo value */
+				fs_ioctl(g,0,sizeof(servo_calibrition_value) << 16 | MAVLINK_MSG_ID_CAL , (unsigned char *)servo_calibrition_value);
 			}
 	  }
 	}else
@@ -281,6 +317,7 @@ int gs_factory_exit(void)
 void gs_factory_handle(unsigned short cmd,unsigned char * data)
 {
 	float tmp[7];
+	int plane_type_t;
 	/*---------*/
 	memcpy(tmp,data,sizeof(tmp));
 	/* len matck ? */
@@ -402,6 +439,20 @@ void gs_factory_handle(unsigned short cmd,unsigned char * data)
 				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_8,0xfe); // 
 			}			
 			break;
+		case MAVLINK_CMD_FACTORY_CMD_14://set plane type
+			/* set plane type */
+		  plane_type_t = gs_factory_setplane(ck,tmp);
+		  /* judging */
+		  if( plane_type_t != FS_ERR )
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_14,plane_type_t);//ok
+			}
+			else
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_14,0);//error
+			}
+			break;
+		  /*----------------*/
 		default:
 			gs_factory_cmd_ack(cmd,1);//error
 			break;

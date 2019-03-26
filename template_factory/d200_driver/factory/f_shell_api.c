@@ -224,6 +224,7 @@ int factory_callback(int type,void * data,int len)
 							case MAVLINK_CMD_FACTORY_CMD_11:	
 							case MAVLINK_CMD_FACTORY_CMD_12:
 							case MAVLINK_CMD_FACTORY_CMD_13:
+							case MAVLINK_CMD_FACTORY_CMD_14:
 								/* ---  */
 								gs_factory_handle(command_long.command,data);
 								break;
