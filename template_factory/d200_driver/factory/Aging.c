@@ -21,6 +21,10 @@ static struct file * g,*ck,*can;
 unsigned char D_or_v;//0 is D-series
 static unsigned short servo_calibrition_value[7];
 static unsigned int servo_freq;
+/* read plane type */
+static unsigned short plane_type_g;
+/* export */
+FS_SHELL_REGISTER(plane_type_g);
 /*----------------------------------------------*/
 FS_CALLBACK_STATIC(aging_callback,1);
 /* modules heap init */
@@ -40,6 +44,9 @@ void aging_heap_init(void)
 	memset(servo_calibrition_value,0,sizeof(servo_calibrition_value));
 	/* init callback */
 	FS_SHELL_INIT(__FS_aging_callback,__FS_aging_callback,0x040001,_CB_ARRAY_);
+	/* init shell */
+	FS_SHELL_INIT(plane_type_g,plane_type_g,0x020001,_CB_VAR_);
+	/* end of files */
 }
 /* aging config */
 void aging_config_default(void)
@@ -106,6 +113,9 @@ void aging_config_default(void)
 		unsigned int sout[2] = { (unsigned int)servo_calibrition_value,sizeof(servo_calibrition_value) };
 		/* output */
 		fs_ioctl(ck,0,FLASH_CALIBRATE,sout);
+		/* get and fack name */
+		plane_type_g = fs_ioctl(ck,15,0,0);
+		/* end of function */
 }
 /* defaild */
 static void gs_factory_cmd_ack(unsigned short cmd , unsigned char ok)
