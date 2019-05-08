@@ -419,9 +419,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>set_planes.c</FileName>
+              <FileName>erase_mileage_num.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\set_planes.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\erase_mileage_num.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -840,9 +840,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>set_planes.c</FileName>
+              <FileName>erase_mileage_num.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\set_planes.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\erase_mileage_num.c</FilePath>
             </File>
           </Files>
         </Group>
