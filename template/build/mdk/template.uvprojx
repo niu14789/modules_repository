@@ -419,9 +419,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>erase_mileage_num.c</FileName>
+              <FileName>set_propeller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\erase_mileage_num.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\set_propeller.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -840,9 +840,9 @@
           <GroupName>template</GroupName>
           <Files>
             <File>
-              <FileName>erase_mileage_num.c</FileName>
+              <FileName>set_propeller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\d200_driver\radio\erase_mileage_num.c</FilePath>
+              <FilePath>..\..\d200_driver\radio\set_propeller.c</FilePath>
             </File>
           </Files>
         </Group>
