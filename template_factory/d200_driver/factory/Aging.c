@@ -7,6 +7,9 @@
 #include "stdio.h"
 #include "f_ops.h"
 #include "f_drv.h"
+/* plane types */
+#define PLANE_PROPELLER_OLD     (0x3514)
+#define PLANE_PROPELLER_NEW     (0x7825)
 /* --------------- factor thread----------------*/
 extern void printf_f(struct file * f,const char * p);
 /* defines */
@@ -23,8 +26,10 @@ static unsigned short servo_calibrition_value[7];
 static unsigned int servo_freq;
 /* read plane type */
 static unsigned short plane_type_g;
+static unsigned short plane_propeller_g;
 /* export */
 FS_SHELL_REGISTER(plane_type_g);
+FS_SHELL_REGISTER(plane_propeller_g);
 /*----------------------------------------------*/
 FS_CALLBACK_STATIC(aging_callback,1);
 /* modules heap init */
@@ -46,6 +51,7 @@ void aging_heap_init(void)
 	FS_SHELL_INIT(__FS_aging_callback,__FS_aging_callback,0x040001,_CB_ARRAY_);
 	/* init shell */
 	FS_SHELL_INIT(plane_type_g,plane_type_g,0x020001,_CB_VAR_);
+	FS_SHELL_INIT(plane_propeller_g,plane_propeller_g,0x020001,_CB_VAR_);
 	/* end of files */
 }
 /* aging config */
@@ -115,6 +121,10 @@ void aging_config_default(void)
 		fs_ioctl(ck,0,FLASH_CALIBRATE,sout);
 		/* get and fack name */
 		plane_type_g = fs_ioctl(ck,15,0,0);
+		/* get propeller */
+		plane_propeller_g = fs_ioctl(ck,17,0,0);
+		/* set format */
+		plane_propeller_g = ( plane_propeller_g == PLANE_PROPELLER_NEW ) ? 3 : 2;
 		/* end of function */
 }
 /* defaild */
@@ -460,6 +470,17 @@ void gs_factory_handle(unsigned short cmd,unsigned char * data)
 			else
 			{
 				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_14,0);//error
+			}
+			break;
+		case MAVLINK_CMD_FACTORY_CMD_15:
+			/* set plane propellers */
+		  if( fs_ioctl(ck,16,2,data) == FS_OK )
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_15,*(unsigned short *)data);//ok
+			}
+			else
+			{
+				gs_factory_cmd_ack(MAVLINK_CMD_FACTORY_CMD_15,0xff);//error
 			}
 			break;
 		  /*----------------*/

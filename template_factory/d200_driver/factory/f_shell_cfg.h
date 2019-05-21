@@ -64,6 +64,7 @@ typedef struct{
 #define MAVLINK_CMD_FACTORY_CMD_12            (262) // R calibrate
 #define MAVLINK_CMD_FACTORY_CMD_13            (263) // R calibrate
 #define MAVLINK_CMD_FACTORY_CMD_14            (264) // set plane type
+#define MAVLINK_CMD_FACTORY_CMD_15            (265) // set plane propeller
 
 #define MAVLINK_MSG_ID_RMP                    (252)
 #define MAVLINK_MSG_ID_CAL                    (251)
