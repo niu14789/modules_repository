@@ -24,6 +24,9 @@ static struct file * g,*ck,*can;
 unsigned char D_or_v;//0 is D-series
 static unsigned short servo_calibrition_value[7];
 static unsigned int servo_freq;
+/* servo test */
+static float servo_fd[7];
+static unsigned int servo_freq_ctrl = 0;
 /* read plane type */
 static unsigned short plane_type_g;
 static unsigned short plane_propeller_g;
@@ -47,6 +50,8 @@ void aging_heap_init(void)
 	D_or_v = __D_SERIES__;
 	/* full of zero */
 	memset(servo_calibrition_value,0,sizeof(servo_calibrition_value));
+	memset(servo_fd,0,sizeof(servo_fd));
+	servo_freq_ctrl = 0;
 	/* init callback */
 	FS_SHELL_INIT(__FS_aging_callback,__FS_aging_callback,0x040001,_CB_ARRAY_);
 	/* init shell */
@@ -259,6 +264,15 @@ static void gs_factory_thread(void)
 		if( gs_cnt_pwm++ > 16 )//200ms
 		{
 			gs_cnt_pwm = 0;
+			/* servo */
+	    servo_freq_ctrl++;
+			/* set servo */
+			for( int i = 0 ; i < 7 ; i ++ ) 
+			{
+				servo_fd[i] = ( servo_freq_ctrl % 5 ) * 200 + 100;
+			}
+			/* send to servo */
+			gs_factory_servo(algo,servo_fd);
 			/* uploader rms */
 			/* send */
 			if( gs_mrs != NULL )
@@ -272,7 +286,8 @@ static void gs_factory_thread(void)
 				fs_ioctl(g,0,sizeof(servo_calibrition_value) << 16 | MAVLINK_MSG_ID_CAL , (unsigned char *)servo_calibrition_value);
 			}
 	  }
-	}else
+	}
+	else
 	{
 		/* exit factory */
 		gs_factory_exit();
