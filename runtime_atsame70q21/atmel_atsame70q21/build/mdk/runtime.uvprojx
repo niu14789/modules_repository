@@ -633,17 +633,17 @@
             <File>
               <FileName>f_open.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\common\file_system\f_open.c</FilePath>
+              <FilePath>..\..\..\..\common\file_system\f_open.c</FilePath>
             </File>
             <File>
               <FileName>f_shell.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\common\file_system\f_shell.c</FilePath>
+              <FilePath>..\..\..\..\common\file_system\f_shell.c</FilePath>
             </File>
             <File>
               <FileName>fs_inode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\common\file_system\fs_inode.c</FilePath>
+              <FilePath>..\..\..\..\common\file_system\fs_inode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1291,17 +1291,17 @@
             <File>
               <FileName>f_open.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\common\file_system\f_open.c</FilePath>
+              <FilePath>..\..\..\..\common\file_system\f_open.c</FilePath>
             </File>
             <File>
               <FileName>f_shell.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\common\file_system\f_shell.c</FilePath>
+              <FilePath>..\..\..\..\common\file_system\f_shell.c</FilePath>
             </File>
             <File>
               <FileName>fs_inode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\common\file_system\fs_inode.c</FilePath>
+              <FilePath>..\..\..\..\common\file_system\fs_inode.c</FilePath>
             </File>
           </Files>
         </Group>
